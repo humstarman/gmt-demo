@@ -1,0 +1,49 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet 
+metadata:
+  labels:
+    component: demo 
+  name: demo
+  namespace: datacentre
+spec:
+  selector:
+    matchLabels:
+      component: demo 
+  template:
+    metadata:
+      labels:
+        component: demo
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: demo
+          image: 172.31.78.217:5000/demo:v1
+          command:
+            - /entrypoint.sh
+            #- /block-chain.py
+            #- -p
+            #- "8080"
+            #- --host
+            #- "$HOST_IP"
+          env:
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 10 
+            periodSeconds: 15 
+          volumeMounts:
+            - name: gluster-volume
+              mountPath: "/mnt"
+      volumes:
+        - name: gluster-volume
+          persistentVolumeClaim:
+            claimName: glusterfs-pvc
