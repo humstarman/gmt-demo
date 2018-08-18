@@ -3,9 +3,8 @@ FROM python:3.6.5
 ENV DEBIAN_FRONTEND noninteractive
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
-RUN apt-get update && \
-    apt-get install -y python-pip && \
-    apt-get install -y vim 
+RUN apt-get update
+RUN apt-get install -y python-pip
 
 COPY requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt

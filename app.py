@@ -31,9 +31,7 @@ node_identifier = str(uuid4()).replace('-', '')
 # Instantiate the Blockchain
 fn = os.path.join("/mnt","demo.dat") 
 def ret_id(ip):
-    if ip == "172.31.78.215": return "1"
-    if ip == "172.31.78.216": return "2"
-    if ip == "172.31.78.217": return "3"
+    return ip
 @app.route('/', methods=['GET'])
 @app.route('/index', methods=['GET'])
 def index():
