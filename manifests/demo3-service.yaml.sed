@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: datacentre
+  namespace: {{.namespace}}
   labels:
     proxy: demo3
   name: demo3-proxy
@@ -9,13 +9,7 @@ spec:
   type: ClusterIP
   ports:
   - name: http 
-    port: 8080 
-    targetPort: 8080
-  - name: one 
-    port: 5000
-    targetPort: 5000
-  - name: two 
-    port: 6000
-    targetPort: 6000
+    port: {{.port}} 
+    targetPort: {{.port}}
   selector:
     component: demo3

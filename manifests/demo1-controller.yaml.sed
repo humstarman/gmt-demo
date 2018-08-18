@@ -1,9 +1,8 @@
 kind: Deployment
 apiVersion: extensions/v1beta1
 metadata:
-  namespace: datacentre
   name: demo1
-  namespace: datacentre
+  namespace: {{.namespace}}
 spec:
   replicas: 1
   template:
@@ -14,12 +13,13 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
         - name: demo1
-          image: 172.31.78.217:5000/demo:v1
+          image: {{.image}} 
+          imagePullPolicy: {{.image.pull.policy}}
           command:
             - /entrypoint.sh
           args:
             - -p
-            - "8080"
+            - "{{.port}}"
           env:
             - name: HOST_IP
               valueFrom:
@@ -32,14 +32,14 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 8080
+              port: {{.port}}
             initialDelaySeconds: 10 
             periodSeconds: 15 
           volumeMounts:
-            - name: gluster-volume
-              mountPath: "/mnt"
-              subPath: demo
+            - name: host-time
+              mountPath: /etc/localtime
+              readOnly: true
       volumes:
-        - name: gluster-volume
-          persistentVolumeClaim:
-            claimName: glusterfs-pvc
+        - name: host-time
+          hostPath:
+            path: /etc/localtime
