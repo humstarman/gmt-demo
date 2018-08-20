@@ -19,6 +19,7 @@ cp:
 	@find ./manifests -type f -name "*.sed" | sed s?".sed"?""?g | xargs -I {} cp {}.sed {}
 
 sed:
+	@find ./manifests -type f -name "*.yaml" | xargs sed -i s?"{{.name}}"?"${NAME}"?g
 	@find ./manifests -type f -name "*.yaml" | xargs sed -i s?"{{.namespace}}"?"${NAMESPACE}"?g
 	@find ./manifests -type f -name "*.yaml" | xargs sed -i s?"{{.port}}"?"${PORT}"?g
 	@find ./manifests -type f -name "*.yaml" | xargs sed -i s?"{{.image}}"?"${IMAGE}"?g
@@ -30,3 +31,6 @@ deploy: cp sed
 clean:
 	@kubectl delete -f ./manifests/.
 	@find ./manifests -type f -name "*.yaml" | xargs rm -f
+
+del-pod:
+	@./scripts/del-pod.sh -n demo1 -s ${NAMESPACE}
