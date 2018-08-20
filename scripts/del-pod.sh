@@ -35,4 +35,4 @@ fi
 chk_var -n $NAME
 NAMESPACE=${NAMESPACE:-"${DEFAULT_NAMESPACE}"}
 POD=$(kubectl get po -n ${NAMESPACE} | grep ${NAME} | awk -F ' ' '{print $1}')
-kubectl -n ${NAMESPACE} delete pod ${POD}
+[ -z "${POD}" ] || kubectl -n ${NAMESPACE} delete pod ${POD}
