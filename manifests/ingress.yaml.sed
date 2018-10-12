@@ -5,14 +5,14 @@ metadata:
   namespace: {{.namespace}} 
 spec:
   rules:
-  - host: gmt.demo1.me 
+  - host: test.demo1.me 
     http:
       paths:
       - path: /
         backend:
           serviceName: demo1-proxy 
           servicePort: {{.port}}
-  - host: gmt.demo3.me 
+  - host: test.demo3.me 
     http:
       paths:
       - path: /
